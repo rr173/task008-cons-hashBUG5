@@ -140,7 +140,8 @@ func writeJSON(w http.ResponseWriter, status int, v any) {
 }
 
 func writeError(w http.ResponseWriter, err error) {
-	if e, ok := err.(*statusErr); ok {
+	var e *statusErr
+	if errors.As(err, &e) {
 		writeJSON(w, e.code, map[string]any{"error": e.msg})
 		return
 	}
